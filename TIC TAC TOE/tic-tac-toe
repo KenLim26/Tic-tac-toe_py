@@ -1,0 +1,179 @@
+a1 = ' '
+a2 = ' '
+a3 = ' '
+b1 = ' '
+b2 = ' '
+b3 = ' '
+c1 = ' '
+c2 = ' '
+c3 = ' '
+
+marked_list = []
+game_end = False
+xturn = True
+oturn = False
+xwin = False
+owin = False
+
+board = f'a |{a1}|{a2}|{a3}\n' \
+        f'b |{b1}|{b2}|{b3}\n' \
+        f'c |{c1}|{c2}|{c3}\n' \
+        f'   1 2 3 \n'
+
+def reset_game():
+    global a1, a2, a3, b1, b2, b3, c1, c2, c3
+    global marked_list, game_end, xturn, oturn, xwin, owin, board
+
+    a1 = ' '
+    a2 = ' '
+    a3 = ' '
+    b1 = ' '
+    b2 = ' '
+    b3 = ' '
+    c1 = ' '
+    c2 = ' '
+    c3 = ' '
+
+    marked_list = []
+    game_end = False
+    xturn = True
+    oturn = False
+    xwin = False
+    owin = False
+
+    board = f'a |{a1}|{a2}|{a3}\n' \
+            f'b |{b1}|{b2}|{b3}\n' \
+            f'c |{c1}|{c2}|{c3}\n' \
+            f'   1 2 3 \n'
+
+def xchange_board(m):
+    global a1, a2, a3, b1, b2, b3, c1, c2, c3, board, xturn, oturn, marked_list
+    valid_input = False
+    for mem in marked_list:
+        if m == mem:
+            print("This cell is already marked. Please choose another one.")
+            break
+    else:
+        valid_input = True
+    if game_end == False and valid_input == True:
+        if m == 'a1':
+            a1 = 'X'
+        elif m == 'a2':
+            a2 = 'X'
+        elif m == 'a3':
+            a3 = 'X'
+        elif m == 'b1':
+            b1 = 'X'
+        elif m == 'b2':
+            b2 = 'X'
+        elif m == 'b3':
+            b3 = 'X'
+        elif m == 'c1':
+            c1 = 'X'
+        elif m == 'c2':
+            c2 = 'X'
+        elif m == 'c3':
+            c3 = 'X'
+        else:
+            print("Try again.")
+            return
+        marked_list.append(m)
+        xturn = False
+        oturn = True
+
+        board = f'a |{a1}|{a2}|{a3}\n' \
+                f'b |{b1}|{b2}|{b3}\n' \
+                f'c |{c1}|{c2}|{c3}\n' \
+                '   1 2 3 '
+ 
+def ochange_board(m):
+    global a1, a2, a3, b1, b2, b3, c1, c2, c3, board, xturn, oturn, marked_list
+    valid_input = False
+    for mem in marked_list:
+        if m == mem:
+            print("This cell is already marked. Please choose another one.")
+            break
+    else:
+        valid_input = True
+    if game_end == False and valid_input == True:
+        if m == 'a1':
+            a1 = 'O'
+        elif m == 'a2':
+            a2 = 'O'
+        elif m == 'a3':
+            a3 = 'O'
+        elif m == 'b1':
+            b1 = 'O'
+        elif m == 'b2':
+            b2 = 'O'
+        elif m == 'b3':
+            b3 = 'O'
+        elif m == 'c1':
+            c1 = 'O'
+        elif m == 'c2':
+            c2 = 'O'
+        elif m == 'c3':
+            c3 = 'O'
+        else:
+            print("Try again.")
+            return
+        marked_list.append(m)
+        xturn = True
+        oturn = False
+
+        board = f'a |{a1}|{a2}|{a3}\n' \
+                f'b |{b1}|{b2}|{b3}\n' \
+                f'c |{c1}|{c2}|{c3}\n' \
+                f'   1  2  3 '
+        
+def check_winner():
+    global xwin, owin, game_end
+
+    win_lines = [
+        (a1, a2, a3),  
+        (b1, b2, b3),
+        (c1, c2, c3),
+        (a1, b1, c1),  
+        (a2, b2, c2),
+        (a3, b3, c3),
+        (a1, b2, c3),  
+        (a3, b2, c1),
+    ]
+
+    for line in win_lines:
+        if line == ('X', 'X', 'X'):
+            xwin = True
+            game_end = True
+            print(board)
+            print("X wins!")
+            return
+        if line == ('O', 'O', 'O'):
+            owin = True
+            game_end = True
+            print(board)
+            print("O wins!")
+            return
+
+    if len(marked_list) == 9:
+        game_end = True
+        print(board)
+        print("Draw!")
+
+while True:
+    reset_game()
+
+    while game_end == False:
+        if xturn == True:
+            print(board)
+            move = input("X's turn:")
+            xchange_board(move)
+        elif oturn == True:
+            print(board)
+            move = input("O's turn:")
+            ochange_board(move)
+        check_winner()
+
+    Retry = input("Play again? (y/n): ").strip().lower()
+    if Retry != 'y':
+        print("Thanks for playing!")
+        break
